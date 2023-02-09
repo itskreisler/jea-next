@@ -1,0 +1,8 @@
+node_modules
+.vscode
+.next
+temp
+tmp
+*.test.js
+*.test.cjs
+*.test.mjs
