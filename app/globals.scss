@@ -75,3 +75,17 @@ $cursores: 'pointer', 'not-allowed';
     cursor: $cursor;
   }
 }
+body[data-body="ingreso"] {
+  background-image: url(/img/FondoJEA.jpg) !important;
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: cover;
+}
+
+// lg
+@media (min-width: 992px) { 
+  .bg-lg-white {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
+  }
+}
