@@ -1,24 +1,40 @@
 'use client'
+import { useState } from 'react'
 import Image from 'next/image'
-import { Card, Col, Container, Row, Form, Button } from 'react-bootstrap'
+import {
+  Card,
+  Col,
+  Container,
+  Row,
+  Form,
+  Button,
+  InputGroup
+} from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import './globals.scss'
-export default function Page () {
-  const { handleSubmit, register } = useForm()
-  const onSubmit = (data) => console.log(data)
+import Link from 'next/link'
+export default function PageIndex () {
+  const { handleSubmit, register } = useForm({ defaultValues: { txtLogin: 'email@example.com', txtPassword: '********' } })
+  const [eye, setEye] = useState(true)
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+  const handleCLickPass = () => {
+    setEye(!eye)
+  }
   return (
-    <>
+    <main data-body='ingreso'>
       <Container fluid>
         <Row>
-          <Col lg={3} className='bg-lg-white text-center mt-5 mt-lg-0 pt-xl-5'>
+          <Col lg={3} className='bg-lg-white text-center mt-5 mt-lg-0'>
             <Image
               src='/img/Encabezadonew.jpg'
               className='object-fit-cover rounded'
-              width={320}
-              height={320}
+              width='320'
+              height='320'
+              priority
               alt='...'
             />
-            <Card>
+            <Card className='mb-3'>
               <Card.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Form.Group className='mb-3' controlId='formUsuario'>
@@ -26,7 +42,6 @@ export default function Page () {
                     <Form.Control
                       className='text-center'
                       type='email'
-                      placeholder='****@***.***'
                       required
                       {...register('txtLogin', { required: true })}
                     />
@@ -34,15 +49,29 @@ export default function Page () {
 
                   <Form.Group className='mb-3' controlId='formPass'>
                     <Form.Label>Contraseña</Form.Label>
-                    <Form.Control
-                      className='text-center'
-                      type='password'
-                      required
-                      placeholder='****'
-                      {...register('txtPassword', { required: true })}
-                    />
+                    <InputGroup className='mb-3'>
+                      <Form.Control
+                        className='text-center'
+                        {...{ type: eye ? 'password' : 'text' }}
+                        required
+                        {...register('txtPassword', { required: true })}
+                      />
+                      <Button
+                        variant='outline-primary'
+                        onClick={handleCLickPass}
+                      >
+                        {eye
+                          ? (
+                            <i className='fa-solid fa-eye' />
+                            )
+                          : (
+                            <i className='fa-solid fa-eye-slash' />
+                            )}
+                      </Button>
+                    </InputGroup>
+
                     <Form.Text className='text-muted'>
-                      <a href='#'>¿Has olvidado tu contraseña?</a>
+                      <Link href='/default'>¿Has olvidado tu contraseña?</Link>
                     </Form.Text>
                   </Form.Group>
                   <Button
@@ -58,32 +87,46 @@ export default function Page () {
           </Col>
         </Row>
       </Container>
-      <Container fluid className='bg-primary mt-1'>
-        <Row className='justify-content-center py-lg-2'>
+      <Container fluid className='bg-primary'>
+        <Row className='justify-content-center py-2 py-lg-2'>
           <Col lg={10}>
             <Row>
               <TagFooterIcons />
               <Col>
-                <p className='text-white m-0'>
-                  <small>Calle 7 No. 6-54 Bogotá. Centro de Atención Telefónica - Bogotá 5954410 - Línea gratuita nacional 018000951100  </small>
+                <p className='text-white m-0 text-center'>
+                  <small>
+                    Calle 7 No. 6-54 Bogotá. Centro de Atención Telefónica -
+                    Bogotá 5954410 <br />- Línea gratuita nacional 018000951100
+                  </small>
                 </p>
               </Col>
             </Row>
           </Col>
         </Row>
       </Container>
-    </>
+    </main>
   )
 }
 const TagFooterIcons = () => {
-  return [
-    'fa-brands fa-twitter',
-    'fa-brands fa-facebook-f',
-    'fa-brands fa-instagram'
-  ].map((className, key) => (
-    <Col xs={1} lg='auto' key={key}>
+  const links = [
+    {
+      className: 'fa-brands fa-twitter',
+      href: 'https://twitter.com/JovenesAccionCo'
+    },
+    {
+      className: 'fa-brands fa-facebook-f',
+      href: 'https://www.facebook.com/JovenesAccionCo'
+    },
+    {
+      className: 'fa-brands fa-instagram',
+      href: 'https://www.instagram.com/jovenesaccionco/'
+    }
+  ]
+
+  return links.map(({ className, href }, key) => (
+    <Col xs={4} lg='auto' className='text-center my-auto' key={key}>
       {' '}
-      <a href='#' className='text-white'>
+      <a {...{ href, className: 'text-white h4', target: '_blank' }}>
         <i {...{ className }} />
       </a>{' '}
     </Col>
