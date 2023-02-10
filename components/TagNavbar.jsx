@@ -27,7 +27,6 @@ const TagNavbar = () => {
           <NavDropdown
             id='nav-dropdown-dark-example'
             title='Name'
-            className='name-dropdown'
             align={breakpoint ? { sm: 'end' } : { md: 'start' }}
           >
             <NavDropdown.Item href='#action/3.1'>Mis Datos</NavDropdown.Item>

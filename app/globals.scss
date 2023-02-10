@@ -53,11 +53,6 @@ img {
     object-fit: cover;
   }
 }
-.name-dropdown a{
-  --bs-text-opacity: 1;
-  color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
-
-}
 .clip-path-circle {
   clip-path: circle(50% at 50% 50%);
 }

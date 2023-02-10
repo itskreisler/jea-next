@@ -12,11 +12,13 @@ import {
 } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
+import axios from 'axios'
 export default function PageIndex () {
   const { handleSubmit, register } = useForm({ defaultValues: { txtLogin: 'email@example.com', txtPassword: '********' } })
   const [eye, setEye] = useState(true)
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data) => {
+    const res = await axios.post('/api/auth/login', data)
+    console.log(res.data)
   }
   const handleCLickPass = () => {
     setEye(!eye)
