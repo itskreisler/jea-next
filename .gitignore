@@ -6,3 +6,4 @@ tmp
 *.test.js
 *.test.cjs
 *.test.mjs
+*.env
