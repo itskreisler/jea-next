@@ -25,11 +25,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     txtPassword
   }
   try {
-    const browser = await puppeteer.launch({
-      args: [
-        '--enable-features=NetworkService'
-      ]
-    }/* {
+    const browser = await puppeteer.launch(/* {
       headless: true,
       devtools: true,
       args: [
@@ -40,44 +36,9 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
       ],
       ignoreHTTPSErrors: true
     } */)
-    const page = await browser.newPage()
-    page.setDefaultNavigationTimeout(0)
-    page.setRequestInterception(true)
-    page.on('request', interceptedRequest => {
-      interceptedRequest.continue({
-        method: 'POST',
-        postData: new URLSearchParams(body).toString(),
-        headers: {
-          ...interceptedRequest.headers(),
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-    })
-    await page.goto(jea.login)
-    const validCredencials = await page.evaluate(() => {
-      try {
-        const message = document.querySelector('#panelMensajes').textContent.trim()
-        return { code: !message, message }
-      } catch (error) {
-        return { code: true, message: 'Login success' }
-      }
-    })
-    if (validCredencials.code) {
-      const cookies = await page.cookies()
-      const token = jwt.sign({
-        exp: Math.round(Date.now() / 1000) * 60 * 60 * 24 * 30,
-        cookies
-      }, process.env.JWT_TOKEN)
-      const serialized = serialize('jeaNext', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 1000 * 60 * 60 * 24 * 30,
-        path: '/'
-      })
-      _res.setHeader('Set-Cookie', serialized)
-    }
-    return _res.status(200).json(validCredencials)
+    browser.close()
+
+    return _res.status(200).json('el navegador se abrio y cerro correctamente')
   } catch (e) {
     rollbar.log('hubo un error')
     return _res
