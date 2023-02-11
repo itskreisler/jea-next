@@ -89,7 +89,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     console.log(error)
     _res.json({
       status: 'error',
-      data: error.message || 'Something went wrong'
+      data: error.message || 'Algo salió mal'
     })
   } finally {
     if (browser !== null) {
