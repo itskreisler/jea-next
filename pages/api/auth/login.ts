@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-
+import { getBrowserInstance } from '../../../hooks/chromium'
 import jwt from 'jsonwebtoken'
 import { serialize } from 'cookie'
 const jea = {
