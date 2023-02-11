@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import puppeteer from 'puppeteer'
 import jwt from 'jsonwebtoken'
 import { serialize } from 'cookie'
+import { rollbar } from '../../../hooks/rollbar'
 const jea = {
   login:
     'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
@@ -74,7 +75,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     }
     return _res.status(200).json(validCredencials)
   } catch (e) {
-    console.log(e)
+    rollbar.log(e)
     return _res
       .status(500)
       .json({
