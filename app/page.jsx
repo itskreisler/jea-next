@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 export default function PageIndex () {
   const router = useRouter()
-  const { handleSubmit, register } = useForm()
+  const { handleSubmit, register } = useForm({ defaultValues: { txtLogin: 'kreisler.ramirez@outlook.com', txtPassword: '07fdec' } })
   const [eye, setEye] = useState(true)
   const [loading, setLoading] = useState(false)
   const onSubmit = async (data) => {
@@ -24,7 +24,7 @@ export default function PageIndex () {
     try {
       const res = await axios.post('/api/auth/login', data)
       if (res.data.code) {
-        router.push('/default')
+        router.push('/jea/default')
       }
     } catch (error) {
       console.log('error')
@@ -85,7 +85,7 @@ export default function PageIndex () {
                     </InputGroup>
 
                     <Form.Text className='text-muted'>
-                      <Link href='/default'>¿Has olvidado tu contraseña?</Link>
+                      <Link href='/jea/default'>¿Has olvidado tu contraseña?</Link>
                     </Form.Text>
                   </Form.Group>
                   <Button
