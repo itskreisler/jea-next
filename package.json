@@ -30,7 +30,6 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.1",
     "react-use": "^17.4.0",
-    "rollbar": "^2.26.1",
     "rooks": "^7.4.3"
   },
   "devDependencies": {
