@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 export default function PageIndex () {
   const router = useRouter()
-  const { handleSubmit, register } = useForm({ defaultValues: { txtLogin: process.env.FORM_LOGIN, txtPassword: process.env.FORM_PASS } })
+  const { handleSubmit, register } = useForm()
   const [eye, setEye] = useState(true)
   const [loading, setLoading] = useState(false)
   const onSubmit = async (data) => {
