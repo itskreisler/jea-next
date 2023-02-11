@@ -25,7 +25,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     txtPassword
   }
   try {
-    const browser = await puppeteer.launch({
+    const browser = await puppeteer.launch(/* {
       headless: true,
       devtools: true,
       args: [
@@ -35,7 +35,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
         '--no-sandbox'
       ],
       ignoreHTTPSErrors: true
-    })
+    } */)
     const page = await browser.newPage()
     page.setDefaultNavigationTimeout(0)
     page.setRequestInterception(true)
