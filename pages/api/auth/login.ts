@@ -25,7 +25,11 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     txtPassword
   }
   try {
-    const browser = await puppeteer.launch(/* {
+    const browser = await puppeteer.launch({
+      args: [
+        '--enable-features=NetworkService'
+      ]
+    }/* {
       headless: true,
       devtools: true,
       args: [
