@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getBrowserInstance } from '../../../hooks/chromium'
-import jwt from 'jsonwebtoken'
+import { jwtsign } from '../../../hooks/jwt'
 import { serialize } from 'cookie'
 const jea = {
   login:
@@ -51,10 +51,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     })
     if (validCredencials.code) {
       const cookies = await page.cookies()
-      const token = jwt.sign({
-        exp: Math.round(Date.now() / 1000) * 60 * 60 * 24 * 30,
-        cookies
-      }, process.env.JWT_TOKEN)
+      const token = jwtsign(cookies)
       const serialized = serialize('jeaNext', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
