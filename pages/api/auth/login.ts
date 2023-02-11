@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import puppeteer from 'puppeteer'
+import jwt from 'jsonwebtoken'
+import { serialize } from 'cookie'
 const jea = {
   login:
     'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
@@ -57,10 +59,22 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     })
     if (validCredencials.code) {
       const cookies = await page.cookies()
-      return _res.status(200).json(cookies)
+      const token = jwt.sign({
+        exp: Math.round(Date.now() / 1000) * 60 * 60 * 24 * 30,
+        cookies
+      }, process.env.JWT_TOKEN)
+      const serialized = serialize('jeaNext', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 1000 * 60 * 60 * 24 * 30,
+        path: '/'
+      })
+      _res.setHeader('Set-Cookie', serialized)
     }
     return _res.status(200).json(validCredencials)
   } catch (e) {
+    console.log(e)
     return _res
       .status(500)
       .json({

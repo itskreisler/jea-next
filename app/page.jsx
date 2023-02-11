@@ -12,13 +12,25 @@ import {
 } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import axios from 'axios'
 export default function PageIndex () {
-  const { handleSubmit, register } = useForm({ defaultValues: { txtLogin: 'email@example.com', txtPassword: '********' } })
+  const router = useRouter()
+  const { handleSubmit, register } = useForm({ defaultValues: { txtLogin: process.env.FORM_LOGIN, txtPassword: process.env.FORM_PASS } })
   const [eye, setEye] = useState(true)
+  const [loading, setLoading] = useState(false)
   const onSubmit = async (data) => {
-    const res = await axios.post('/api/auth/login', data)
-    console.log(res.data)
+    setLoading(true)
+    try {
+      const res = await axios.post('/api/auth/login', data)
+      if (res.data.code) {
+        router.push('/default')
+      }
+    } catch (error) {
+      console.log('error')
+    } finally {
+      setLoading(false)
+    }
   }
   const handleCLickPass = () => {
     setEye(!eye)
@@ -80,8 +92,9 @@ export default function PageIndex () {
                     variant='primary'
                     type='submit'
                     className='text-white w-100'
+                    disabled={loading}
                   >
-                    Entrar
+                    {loading ? 'Entrando...' : 'Entrar'}
                   </Button>
                 </Form>
               </Card.Body>
