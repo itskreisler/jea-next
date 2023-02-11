@@ -1,31 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import chromium from 'chrome-aws-lambda'
+
 import jwt from 'jsonwebtoken'
 import { serialize } from 'cookie'
 const jea = {
   login:
     'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
 }
-async function getBrowserInstance () {
-  const executablePath = await chromium.executablePath
 
-  if (!executablePath) {
-    // running locally
-    const puppeteer = require('puppeteer')
-    return puppeteer.launch({
-      args: chromium.args,
-      headless: true,
-      ignoreHTTPSErrors: true
-    })
-  }
-
-  return chromium.puppeteer.launch({
-    args: chromium.args,
-    executablePath,
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true
-  })
-}
 export default async function handler (_req: NextApiRequest, _res: NextApiResponse) {
   const { txtLogin, txtPassword } = _req.body
   if (!txtLogin && !txtPassword) {
