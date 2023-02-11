@@ -78,8 +78,8 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     return _res
       .status(500)
       .json({
-        error:
-          'Error interno en el servidor, por favor vuelve a intentarlo más tarde.'
+        code: true,
+        message: 'Error interno en el servidor, por favor vuelve a intentarlo más tarde.'
       })
   }
 }
