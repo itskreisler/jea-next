@@ -75,7 +75,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     }
     return _res.status(200).json(validCredencials)
   } catch (e) {
-    rollbar.log(e)
+    rollbar.log('hubo un error')
     return _res
       .status(500)
       .json({
