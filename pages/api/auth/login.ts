@@ -80,6 +80,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
       .status(500)
       .json({
         code: true,
+        error: e,
         message: 'Error interno en el servidor, por favor vuelve a intentarlo más tarde.'
       })
   }
