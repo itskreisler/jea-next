@@ -1,12 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import puppeteer from 'puppeteer'
-import jwt from 'jsonwebtoken'
-import { serialize } from 'cookie'
 import { rollbar } from '../../../hooks/rollbar'
-const jea = {
-  login:
-    'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
-}
+
 export default async function handler (_req: NextApiRequest, _res: NextApiResponse) {
   try {
     const browser = await puppeteer.launch(/* {
