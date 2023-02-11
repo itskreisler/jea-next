@@ -1,10 +1,30 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import puppeteer from 'puppeteer'
+import chromium from 'chrome-aws-lambda'
 import jwt from 'jsonwebtoken'
 import { serialize } from 'cookie'
 const jea = {
   login:
     'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
+}
+async function getBrowserInstance () {
+  const executablePath = await chromium.executablePath
+
+  if (!executablePath) {
+    // running locally
+    const puppeteer = require('puppeteer')
+    return puppeteer.launch({
+      args: chromium.args,
+      headless: true,
+      ignoreHTTPSErrors: true
+    })
+  }
+
+  return chromium.puppeteer.launch({
+    args: chromium.args,
+    executablePath,
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true
+  })
 }
 export default async function handler (_req: NextApiRequest, _res: NextApiResponse) {
   const { txtLogin, txtPassword } = _req.body
@@ -23,18 +43,9 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     txtLogin,
     txtPassword
   }
+  let browser = null
   try {
-    const browser = await puppeteer.launch({
-      headless: true,
-      devtools: true,
-      args: [
-        '--disable-cache',
-        '--disable-application-cache',
-        '--enable-features=NetworkService',
-        '--no-sandbox'
-      ],
-      ignoreHTTPSErrors: true
-    })
+    browser = await getBrowserInstance()
     const page = await browser.newPage()
     page.setDefaultNavigationTimeout(0)
     page.setRequestInterception(true)
@@ -74,13 +85,15 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     }
     browser.close()
     return _res.status(200).json(validCredencials)
-  } catch (e) {
-    console.log(e)
-    return _res
-      .status(500)
-      .json({
-        code: true,
-        message: 'Error interno en el servidor, por favor vuelve a intentarlo más tarde.'
-      })
+  } catch (error) {
+    console.log(error)
+    _res.json({
+      status: 'error',
+      data: error.message || 'Something went wrong'
+    })
+  } finally {
+    if (browser !== null) {
+      await browser.close()
+    }
   }
 }
