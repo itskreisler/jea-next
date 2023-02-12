@@ -8,7 +8,7 @@ const jea = {
 }
 
 export default async function handler (_req: NextApiRequest, _res: NextApiResponse) {
-  /* const { txtLogin, txtPassword } = _req.body
+  const { txtLogin, txtPassword } = _req.body
   if (!txtLogin && !txtPassword) {
     return _res.status(401).json({ error: 'txtLogin & txtPassword is null' })
   }
@@ -73,6 +73,5 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     if (browser !== null) {
       await browser.close()
     }
-  } */
-  _res.status(200).json('hello world')
+  }
 }
