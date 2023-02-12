@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import { getBrowserInstance } from '../../../hooks/chromium'
 import { jwtsign } from '../../../hooks/jwt'
 import { serialize } from 'cookie'
@@ -7,7 +6,7 @@ const jea = {
     'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
 }
 
-export default async function handler (_req: NextApiRequest, _res: NextApiResponse) {
+export default async function handler (_req, _res) {
   const { txtLogin, txtPassword } = _req.body
   if (!txtLogin && !txtPassword) {
     return _res.status(401).json({ error: 'txtLogin & txtPassword is null' })
