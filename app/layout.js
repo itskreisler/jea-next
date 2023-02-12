@@ -4,7 +4,7 @@ export default function RootLayout ({ children }) {
   return (
     <html>
       <head>
-        <script src='/js/fontawesome.js' />
+        <script src='https://kit.fontawesome.com/c33374846e.js' crossOrigin='anonymous' />
       </head>
       <body>
         {children}
