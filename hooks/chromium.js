@@ -11,7 +11,12 @@ export async function getBrowserInstance () {
     })
   }
   return chromium.puppeteer.launch({
-    args: chromium.args,
+    args: [
+      '--disable-cache',
+      '--disable-application-cache',
+      '--enable-features=NetworkService',
+      '--no-sandbox'
+    ]/* chromium.args */,
     executablePath,
     headless: chromium.headless,
     ignoreHTTPSErrors: true
