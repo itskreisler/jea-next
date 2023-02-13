@@ -14,17 +14,24 @@ import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import { useSweetAlert2 } from '../hooks/user-sweet-alert'
 export default function PageIndex () {
   const router = useRouter()
   const { handleSubmit, register } = useForm()
   const [eye, setEye] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [status, ToastFire] = useSweetAlert2({ icon: 'warning', title: 'hola mundo' })
+
   const onSubmit = async (data) => {
     setLoading(true)
     try {
       const res = await axios.post('/api/auth/login', data)
       if (res.data.code) {
         router.push('/jea/default')
+      } else {
+        if (status === 'ready') {
+          ToastFire.current({ icon: 'error', title: res.data.message })
+        }
       }
     } catch (error) {
       console.log('error')
