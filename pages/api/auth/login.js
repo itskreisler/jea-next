@@ -1,7 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import { JSDOM } from 'jsdom'
 import superagent from 'superagent'
-export default async function handler (_req: NextApiRequest, _res: NextApiResponse) {
+export default async function handler (_req, _res) {
   const { txtLogin, txtPassword } = _req.body
   if (!txtLogin && !txtPassword) {
     return _res.status(401).json({ error: 'txtLogin & txtPassword is null' })
@@ -22,7 +21,7 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
 }
 const getCookies = async (body) => {
   try {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
     const response = await superagent.agent()
       .post(
