@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { useSweetAlert2 } from '../hooks/user-sweet-alert'
+import { useSweetAlert2 } from '../helpers/user-sweet-alert'
 export default function PageIndex () {
   const router = useRouter()
   const { handleSubmit, register } = useForm()

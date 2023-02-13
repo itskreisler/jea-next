@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { useEffect, useRef } from 'react'
-import { useScript } from '../hooks/use-script'
+import { useScript } from '../helpers/use-script'
 export const useSweetAlert2 = () => {
   const status = useScript(
     'https://unpkg.com/sweetalert2@11.7.1/dist/sweetalert2.all.min.js'
