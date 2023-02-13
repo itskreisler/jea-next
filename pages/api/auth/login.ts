@@ -1,12 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getBrowserInstance } from '../../../hooks/chromium'
-import { jwtsign } from '../../../hooks/jwt'
-import { serialize } from 'cookie'
-const jea = {
-  login:
-    'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
-}
-
+import { JSDOM } from 'jsdom'
+import superagent from 'superagent'
 export default async function handler (_req: NextApiRequest, _res: NextApiResponse) {
   const { txtLogin, txtPassword } = _req.body
   if (!txtLogin && !txtPassword) {
@@ -24,54 +18,33 @@ export default async function handler (_req: NextApiRequest, _res: NextApiRespon
     txtLogin,
     txtPassword
   }
-  let browser = null
+  return _res.json(await getCookies(body))
+}
+const getCookies = async (body) => {
   try {
-    browser = await getBrowserInstance()
-    const page = await browser.newPage()
-    page.setDefaultNavigationTimeout(0)
-    page.setRequestInterception(true)
-    page.on('request', interceptedRequest => {
-      interceptedRequest.continue({
-        method: 'POST',
-        postData: new URLSearchParams(body).toString(),
-        headers: {
-          ...interceptedRequest.headers(),
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-    })
-    await page.goto(jea.login)
-    const validCredencials = await page.evaluate(() => {
-      try {
-        const message = document.querySelector('#panelMensajes').textContent.trim()
-        return { code: !message, message }
-      } catch (error) {
-        return { code: true, message: 'Login success' }
-      }
-    })
-    if (validCredencials.code) {
-      const cookies = await page.cookies()
-      const token = jwtsign(cookies)
-      const serialized = serialize('jeaNext', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 1000 * 60 * 60 * 24 * 30,
-        path: '/'
-      })
-      _res.setHeader('Set-Cookie', serialized)
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
+    const response = await superagent.agent()
+      .post(
+        'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
+      )
+      .send(body)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+    const postData = response.text
+    const dom = new JSDOM(postData)
+    const $ = (_) => dom.window.document.querySelector(_)
+    const panelMensajes = $('#panelMensajes')?.textContent.trim()
+    if (typeof panelMensajes === 'undefined') {
+      return { code: true, message: 'Login success' }
     }
-    browser.close()
-    return _res.status(200).json(validCredencials)
-  } catch (error) {
-    console.log(error)
-    _res.json({
-      status: 'error',
-      data: error.message || 'Algo salió mal'
-    })
-  } finally {
-    if (browser !== null) {
-      await browser.close()
-    }
+    return { code: false, message: panelMensajes }
+
+    // const cookies = await response.header['set-cookie']
+    // console.log(cookies)
+    // const other = await superagent.get('https://jovenes.prosperidadsocial.gov.co/JeA/App/Default.aspx')
+    // console.log(other.header['set-cookie'])
+  } catch (err) {
+    console.error(err)
+    return { code: false, message: 'Error interno en el servidor' }
   }
 }
