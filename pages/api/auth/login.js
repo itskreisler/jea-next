@@ -23,7 +23,8 @@ const getCookies = async (body) => {
   try {
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
-    const response = await superagent.agent()
+    const response = await superagent
+      .agent()
       .post(
         'https://jovenes.prosperidadsocial.gov.co/JeA/App/Autenticacion/Ingreso.aspx'
       )
@@ -34,7 +35,11 @@ const getCookies = async (body) => {
     const $ = (_) => dom.window.document.querySelector(_)
     const panelMensajes = $('#panelMensajes')?.textContent.trim()
     if (typeof panelMensajes === 'undefined') {
-      return { code: true, message: 'Login success' }
+      return {
+        code: true,
+        message: 'Login success',
+        cookie: response.header['set-cookie']
+      }
     }
     return { code: false, message: panelMensajes }
 
