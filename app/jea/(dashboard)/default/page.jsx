@@ -66,8 +66,6 @@ export default function PageDefault () {
           </Col>
 
           {info.length > 0 && info.map(({ label, input, select, selected }, i) => {
-            const option = select.find(({ value }) => value.include(selected))
-            console.log('op:', option)
             return (
               <Col md='3' key={i}>
                 {select.length > 0
