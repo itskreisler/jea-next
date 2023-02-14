@@ -92,7 +92,7 @@ export default function PageIndex () {
                     </InputGroup>
 
                     <Form.Text className='text-muted'>
-                      <Link href='/jea/default'>¿Has olvidado tu contraseña?</Link>
+                      <Link href='#'>¿Has olvidado tu contraseña?</Link>
                     </Form.Text>
                   </Form.Group>
                   <Button

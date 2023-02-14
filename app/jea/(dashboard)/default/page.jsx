@@ -66,17 +66,16 @@ export default function PageDefault () {
           </Col>
 
           {info.length > 0 && info.map(({ label, input, select, selected }, i) => {
+            console.log()
             return (
               <Col md='3' key={i}>
                 {select.length > 0
                   ? (
                     <>
                       <Form.Label>{label}</Form.Label>
-                      <Form.Select disabled>
-                        <option>Open this select menu</option>
-                        <option value='1'>One</option>
-                        <option value='2'>Two</option>
-                        <option value='3'>Three</option>
+                      <Form.Select className='cursor-not-allowed' disabled>
+                        <option selected='selected'>{select.find(({ value }) => value === selected)?.text}</option>
+
                       </Form.Select>
                     </>
                     )

@@ -1,10 +1,18 @@
 'use client'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { Navbar, Container, NavDropdown, Nav } from 'react-bootstrap'
 import { useMedia } from 'react-use'
 const TagNavbar = () => {
+  const router = useRouter()
   const breakpoint = useMedia('(min-width: 576px)')
-
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout')
+    } finally {
+      router.push('/')
+    }
+  }
   return (
     <Navbar bg='primary' variant='dark'>
       <Container>
@@ -36,7 +44,7 @@ const TagNavbar = () => {
               Cambio Contraseña
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item href='#action/3.4'>
+            <NavDropdown.Item onClick={logout}>
               Cerrar Sesíon
             </NavDropdown.Item>
           </NavDropdown>

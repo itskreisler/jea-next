@@ -58,12 +58,10 @@ const getInfo = (html) => {
       const label = item.querySelector('label')?.textContent
       const input = item.querySelector('input')?.value || null
       const selected = item.querySelector('select')?.value || null
-      const select = [...item.querySelectorAll('select')].map((item) =>
-        [...item.querySelectorAll('option')].map((item) => ({
-          value: item.getAttribute('value'),
-          text: item?.textContent
-        }))
-      )
+      const select = [...item.querySelectorAll('option')].map((item) => ({
+        value: item.getAttribute('value'),
+        text: item?.textContent
+      }))
 
       return { label, input, selected, select }
     })
