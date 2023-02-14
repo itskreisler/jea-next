@@ -15,9 +15,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { useSweetAlert2 } from '../helpers/user-sweet-alert'
+import { useLocalstorageState } from 'rooks'
 export default function PageIndex () {
   const router = useRouter()
   const { handleSubmit, register } = useForm()
+  const [user, setUser] = useLocalstorageState('PageIndex:user', [])
   const [eye, setEye] = useState(true)
   const [loading, setLoading] = useState(false)
   const [status, ToastFire] = useSweetAlert2({ icon: 'warning', title: 'hola mundo' })
@@ -27,6 +29,8 @@ export default function PageIndex () {
     try {
       const res = await axios.post('/api/auth/login', data)
       if (res.data.code) {
+        const tmp = data.txtLogin.split('@').shift()
+        !user.includes() && setUser([...user, tmp])
         router.push('/jea/default')
       } else {
         if (status === 'ready') {
@@ -55,44 +59,32 @@ export default function PageIndex () {
               priority
               alt='...'
             />
-            <Card className='d-none'>
+            <Card className={!user.length ? 'd-none' : 'mb-3'}>
               <Card.Body>
-                <Row className='justify-content-center'>
-                  <Col xs='2' md='auto'>
-                    <div style={{ maxWidth: '40px' }}>
-                      <span style={{
-                        backgroundColor: '#198754',
-                        color: '#fff',
-                        fill: '#198754',
-                        display: 'flex',
-                        width: '38px',
-                        height: '38px',
-                        borderRadius: '50%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        fontSize: '20px',
-                        lineHeight: 'normal',
-                        textTransform: 'uppercase',
-                        fontWeight: '500'
-                      }}
-                      >
-                        K
-                      </span>
-                    </div>
-                  </Col>
-                  <Col xs='10' md='8'>
-                    <Button variant='outline-success' className='w-100'>
-                      Continuar...
-                    </Button>
-                  </Col>
-                </Row>
+                {user.map((u, i) => (
+                  <Row key={i} className='justify-content-center'>
+                    <Col xs='2' md='auto'>
+                      <div className='reviewer-photo'>
+                        <span className='initial-profile profile-style-0'>
+                          {[...u].shift()}
+                        </span>
+                      </div>
+                    </Col>
+                    <Col xs='10' md='8'>
+                      <Button variant='outline-secondary' className='w-100'>
+                        {u}
+                      </Button>
+                    </Col>
+                  </Row>
+
+                ))}
               </Card.Body>
             </Card>
             <Card className='mb-3 border-primary'>
               <Card.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Form.Group className='mb-3' controlId='formUsuario'>
-                    <Form.Label>Usuario </Form.Label>
+                    <Form.Label>Usuario</Form.Label>
                     <Form.Control
                       className='text-center'
                       type='email'

@@ -7,7 +7,7 @@ import {
   NavDropdown,
   Row,
   Col,
-  Form, Placeholder, Card
+  Form, Placeholder
 } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 export default function PageDefault () {
@@ -85,7 +85,7 @@ export default function PageDefault () {
                     <>
                       <Form.Label>{label}</Form.Label>
                       <Form.Select className='cursor-not-allowed' disabled>
-                        <option selected='selected'>{select.find(({ value }) => value === selected)?.text}</option>
+                        <option>{select.find(({ value }) => value === selected)?.text}</option>
 
                       </Form.Select>
                     </>
@@ -95,7 +95,7 @@ export default function PageDefault () {
                       <Form.Label>{label}</Form.Label>
                       <Form.Control
                         className='cursor-not-allowed'
-                        value={input}
+                        value={input || ''}
                         type='text'
                         disabled
                       />

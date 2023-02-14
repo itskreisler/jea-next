@@ -16,12 +16,17 @@ export default async function handler (_req, _res) {
     txtPassword: cryptoJsEncrypt(txtPassword)
   })
   const serialized = cookieSerialize(
-    'jeaNext',
+    `jeaNext.${txtLogin.split('@').shift()}`,
     token
   )
-  _res.setHeader('Set-Cookie', serialized)
+  const account = cookieSerialize(
+    'jeaNextAccount',
+    `jeaNext.${txtLogin.split('@').shift()}`
+  )
+  const login = await checkLogin({ ...jeaBody, txtLogin, txtPassword })
+  if (login.code)_res.setHeader('Set-Cookie', [account, serialized])
 
-  return _res.json(await checkLogin({ ...jeaBody, txtLogin, txtPassword }))
+  return _res.json(login)
 }
 const checkLogin = async (body) => {
   try {

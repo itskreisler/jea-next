@@ -2,11 +2,12 @@
 import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 export async function middleware (request) {
-  const jwt = request.cookies.get('jeaNext')
-  if (!jwt) return NextResponse.redirect(new URL('/', request.url))
+  const account = request.cookies.get('jeaNextAccount')
+  if (!account) return NextResponse.redirect(new URL('/', request.url))
   try {
+    const token = request.cookies.get(account.value)
     await jwtVerify(
-      jwt.value,
+      token.value,
       new TextEncoder().encode(process.env.JWT_SECRET)
     )
     return NextResponse.next()
