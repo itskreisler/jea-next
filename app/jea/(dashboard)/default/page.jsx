@@ -7,7 +7,7 @@ import {
   NavDropdown,
   Row,
   Col,
-  Form
+  Form, Placeholder, Card
 } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 export default function PageDefault () {
@@ -64,9 +64,20 @@ export default function PageDefault () {
               </legend>
             </fieldset>
           </Col>
-
+          {info.length === 0 && Array(22).fill(null).map((_, i) => {
+            const min = 1; const max = 12
+            return (
+              <Col md='3' key={i}>
+                <Form.Group className='mb-3'>
+                  <Placeholder animation='glow'>
+                    <Placeholder xs={Math.floor(Math.random() * (max - min + 1)) + min} />
+                  </Placeholder>
+                  <Placeholder.Button variant='secondary' xs={12} />
+                </Form.Group>
+              </Col>
+            )
+          })}
           {info.length > 0 && info.map(({ label, input, select, selected }, i) => {
-            console.log()
             return (
               <Col md='3' key={i}>
                 {select.length > 0
@@ -80,7 +91,7 @@ export default function PageDefault () {
                     </>
                     )
                   : (
-                    <Form.Group className='mb-3' controlId='formBasicEmail'>
+                    <Form.Group className='mb-3'>
                       <Form.Label>{label}</Form.Label>
                       <Form.Control
                         className='cursor-not-allowed'

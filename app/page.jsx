@@ -46,16 +46,49 @@ export default function PageIndex () {
     <main data-body='ingreso'>
       <Container fluid>
         <Row>
-          <Col lg={3} className='bg-lg-white text-center mt-5 mt-lg-0'>
+          <Col lg={3} className='bg-white border rounded text-center mt-lg-0'>
             <Image
               src='/img/Encabezadonew.jpg'
-              className='object-fit-cover rounded'
+              className='object-fit-cover rounded border my-2'
               width='320'
               height='320'
               priority
               alt='...'
             />
-            <Card className='mb-3'>
+            <Card className='d-none'>
+              <Card.Body>
+                <Row className='justify-content-center'>
+                  <Col xs='2' md='auto'>
+                    <div style={{ maxWidth: '40px' }}>
+                      <span style={{
+                        backgroundColor: '#198754',
+                        color: '#fff',
+                        fill: '#198754',
+                        display: 'flex',
+                        width: '38px',
+                        height: '38px',
+                        borderRadius: '50%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        fontSize: '20px',
+                        lineHeight: 'normal',
+                        textTransform: 'uppercase',
+                        fontWeight: '500'
+                      }}
+                      >
+                        K
+                      </span>
+                    </div>
+                  </Col>
+                  <Col xs='10' md='8'>
+                    <Button variant='outline-success' className='w-100'>
+                      Continuar...
+                    </Button>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+            <Card className='mb-3 border-primary'>
               <Card.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Form.Group className='mb-3' controlId='formUsuario'>
@@ -96,12 +129,12 @@ export default function PageIndex () {
                     </Form.Text>
                   </Form.Group>
                   <Button
-                    variant='primary'
+                    variant='outline-primary'
                     type='submit'
-                    className='text-white w-100'
+                    className='w-100'
                     disabled={loading}
                   >
-                    {loading ? 'Entrando...' : 'Entrar'}
+                    <strong>{loading ? 'Entrando...' : 'Entrar'}</strong>
                   </Button>
                 </Form>
               </Card.Body>
