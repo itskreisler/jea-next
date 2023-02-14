@@ -3,10 +3,8 @@ import superagent from 'superagent'
 
 import { jwtVerify, cryptoJsDecrypt, jeaBody } from '../../helpers/exports'
 export default async function handler (_req, _res) {
-  const { jeaNextAccount } = _req.cookies
   try {
-    const { data: { account } } = jwtVerify(jeaNextAccount)
-    const user = _req.cookies[account]
+    const user = _req.cookies.jeaNext
     const { data } = jwtVerify(user)
     const [txtLogin, txtPassword] = [cryptoJsDecrypt(data.txtLogin), cryptoJsDecrypt(data.txtPassword)]
 
