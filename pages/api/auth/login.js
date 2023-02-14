@@ -1,25 +1,35 @@
 import { JSDOM } from 'jsdom'
 import superagent from 'superagent'
+import {
+  jeaBody,
+  jwtSign,
+  cryptoJsEncrypt,
+  cookieSerialize
+} from '../../../helpers/exports'
 export default async function handler (_req, _res) {
   const { txtLogin, txtPassword } = _req.body
   if (!txtLogin && !txtPassword) {
     return _res.status(401).json({ error: 'txtLogin & txtPassword is null' })
   }
-  const body = {
-    __EVENTTARGET: '',
-    __EVENTARGUMENT: '',
-    __VIEWSTATE:
-      '/wEPDwUKMTgzMTkwNjU5N2RkBzRfMAiOYq+2C5xb/CKcUKIc0tteUaD5VsGtBdniwOw=',
-    __VIEWSTATEGENERATOR: '5FB187ED',
-    __EVENTVALIDATION:
-      '/wEdAAVkLbFzMJkj2q5ajQFnB1/Nxcn6oIDdbNQI5AQUIIyv4nY2+Mc6SrnAqio3oCKbxYbhmcUwnnAqzH7wP2sLpdBP5S6DA253Jb+lVAXUo1bJz6namLqidyxo2qXDrxuDEDt4cCYQJnlXam9t00UTah+n',
-    BtnEntrar: 'Entrar',
-    txtLogin,
-    txtPassword
-  }
-  return _res.json(await getCookies(body))
+  const token = jwtSign({
+    txtLogin: cryptoJsEncrypt(txtLogin),
+    txtPassword: cryptoJsEncrypt(txtPassword)
+  })
+  const serialized = cookieSerialize(
+    `jeaNext.${txtLogin.split('@').shift()}`,
+    token
+  )
+  _res.setHeader('Set-Cookie', serialized)
+  _res.setHeader(
+    'Set-Cookie',
+    cookieSerialize(
+      'jeaNextAccount',
+      jwtSign({ account: `jeaNext.${txtLogin.split('@').shift()}` })
+    )
+  )
+  return _res.json(await checkLogin({ ...jeaBody, txtLogin, txtPassword }))
 }
-const getCookies = async (body) => {
+const checkLogin = async (body) => {
   try {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
