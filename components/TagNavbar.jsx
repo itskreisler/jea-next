@@ -1,9 +1,9 @@
 'use client'
 import Image from 'next/image'
 import { Navbar, Container, NavDropdown, Nav } from 'react-bootstrap'
-import { useMedia as useMedi } from 'react-use'
+import { useMedia } from 'react-use'
 const TagNavbar = () => {
-  const breakpoint = useMedi('(min-width: 576px)')
+  const breakpoint = useMedia('(min-width: 576px)')
 
   return (
     <Navbar bg='primary' variant='dark'>
@@ -19,11 +19,13 @@ const TagNavbar = () => {
         </Navbar.Brand>
         <Navbar.Toggle />
         <Nav className='justify-content-end'>
-          {breakpoint && (
-            <Navbar.Text className='text-white'>
-              Bienvenido : &nbsp;
-            </Navbar.Text>
-          )}
+          {breakpoint
+            ? (
+              <Navbar.Text className='text-white'>
+                Bienvenido : &nbsp;
+              </Navbar.Text>
+              )
+            : <></>}
           <NavDropdown
             id='nav-dropdown-dark-example'
             title='Name'

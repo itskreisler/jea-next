@@ -8,7 +8,7 @@ export default async function handler (_req, _res) {
     const { data } = jwtVerify(user)
     const [txtLogin, txtPassword] = [cryptoJsDecrypt(data.txtLogin), cryptoJsDecrypt(data.txtPassword)]
 
-    return _res.json(await getProfile({ ...jeaBody, txtLogin, txtPassword }))
+    return _res.status(200).json(await getProfile({ ...jeaBody, txtLogin, txtPassword }))
   } catch (e) {
     return _res.json({ code: false, message: 'Invalid token' })
   }
@@ -56,8 +56,8 @@ const getInfo = (html) => {
     )
     .map((item) => {
       const label = item.querySelector('label')?.textContent
-      const input = item.querySelector('input')?.value
-      const selected = item.querySelector('select')?.value
+      const input = item.querySelector('input')?.value || null
+      const selected = item.querySelector('select')?.value || null
       const select = [...item.querySelectorAll('select')].map((item) =>
         [...item.querySelectorAll('option')].map((item) => ({
           value: item.getAttribute('value'),
