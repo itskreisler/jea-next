@@ -1,32 +1,28 @@
 import React from 'react'
 import {
-    Card,
-    Col,
-    Container,
-    Row,
-    Form,
-    Button,
-    InputGroup
-  } from 'react-bootstrap'
+  Col,
+  Container,
+  Row
+} from 'react-bootstrap'
 const TagFooter = () => {
   return (
     <Container fluid className='bg-primary'>
-        <Row className='justify-content-center py-2 py-lg-2'>
-          <Col lg={10}>
-            <Row>
-              <TagFooterIcons />
-              <Col>
-                <p className='text-white m-0 text-center'>
-                  <small>
-                    Calle 7 No. 6-54 Bogotá. Centro de Atención Telefónica -
-                    Bogotá 5954410 <br />- Línea gratuita nacional 018000951100
-                  </small>
-                </p>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
+      <Row className='justify-content-center py-2 py-lg-2'>
+        <Col lg={10}>
+          <Row>
+            <TagFooterIcons />
+            <Col>
+              <p className='text-white m-0 text-center'>
+                <small>
+                  Calle 7 No. 6-54 Bogotá. Centro de Atención Telefónica -
+                  Bogotá 5954410 <br />- Línea gratuita nacional 018000951100
+                </small>
+              </p>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 const TagFooterIcons = () => {
