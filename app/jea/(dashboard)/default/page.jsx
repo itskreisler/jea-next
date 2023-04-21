@@ -10,12 +10,18 @@ import {
   Form, Placeholder
 } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
+import TagFooter from '../../../../components/TagFooter'
 export default function PageDefault () {
   const [info, setInfo] = useState([])
+  const [userName, setUserName] = useState('')
   const getProfile = async () => {
     const res = await fetch('/api/profile')
-    const data = await res.json()
-    data.code && setInfo(data.data)
+    const {
+      code, nameProfile,
+      data
+    } = await res.json()
+    code && setInfo(data)
+    code && setUserName(nameProfile)
   }
   useEffect(() => {
     getProfile()
@@ -51,7 +57,7 @@ export default function PageDefault () {
       </Container>
       <Container>
         <Alert className='my-2 text-justify' variant='primary'>
-          Bienvenido(a) {JSON.stringify('{name}')} Verifique que toda su
+          Bienvenido(a) {userName} Verifique que toda su
           información de datos básicos y de ubicación/contacto sea correcta. Si
           no es así, haga click en Actualizar información.
         </Alert>
@@ -106,6 +112,7 @@ export default function PageDefault () {
           })}
         </Row>
       </Container>
+      <TagFooter />
     </>
   )
 }

@@ -30,10 +30,12 @@ const getProfile = async (body) => {
     const $ = (_) => dom.window.document.querySelector(_)
     const panelMensajes = $('#panelMensajes')?.textContent.trim()
     if (typeof panelMensajes === 'undefined') {
+      const [nameProfile, data] = getInfo(postData)
       return {
         code: true,
         message: 'Login success',
-        data: getInfo(postData)
+        nameProfile,
+        data
       }
     }
     return { code: false, message: panelMensajes }
@@ -50,6 +52,7 @@ const getProfile = async (body) => {
 
 const getInfo = (html) => {
   const dom = new JSDOM(html)
+  const nameProfile = dom.window.document.querySelector('#ctl00_lblNombreUsuario')?.textContent
   const $ = (selector) => dom.window.document.querySelectorAll(selector)
   const LabelsInputsSelects = [...$('.form-group')]
     .filter(
@@ -66,5 +69,5 @@ const getInfo = (html) => {
 
       return { label, input, selected, select }
     })
-  return LabelsInputsSelects
+  return [nameProfile, LabelsInputsSelects]
 }

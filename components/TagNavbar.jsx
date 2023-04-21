@@ -30,13 +30,13 @@ const TagNavbar = () => {
           {breakpoint
             ? (
               <Navbar.Text className='text-white'>
-                Bienvenido : &nbsp;
+                Bienvenido | &nbsp;
               </Navbar.Text>
               )
             : <></>}
           <NavDropdown
             id='nav-dropdown-dark-example'
-            title='Name'
+            title='Menu'
             align={breakpoint ? { sm: 'end' } : { md: 'start' }}
           >
             <NavDropdown.Item href='#action/3.1'>Mis Datos</NavDropdown.Item>
